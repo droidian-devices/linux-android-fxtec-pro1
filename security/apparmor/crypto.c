@@ -29,12 +29,49 @@ unsigned int aa_hash_size(void)
 	return apparmor_hash_size;
 }
 
+char *aa_calc_hash(void *data, size_t len)
+{
+  	SHASH_DESC_ON_STACK(desc, apparmor_tfm);
+	char *hash = NULL;
+	int error = -ENOMEM;
+
+	if (!apparmor_tfm)
+		return NULL;
+
+	hash = kzalloc(apparmor_hash_size, GFP_KERNEL);
+	if (!hash)
+		goto fail;
+
+	desc->tfm = apparmor_tfm;
+	desc->flags = 0;
+
+	error = crypto_shash_init(desc);
+	if (error)
+		goto fail;
+	error = crypto_shash_update(desc, (u8 *) data, len);
+	if (error)
+		goto fail;
+	error = crypto_shash_final(desc, hash);
+	if (error)
+		goto fail;
+
+	return hash;
+
+fail:
+	kfree(hash);
+
+	return ERR_PTR(error);
+}
+
 int aa_calc_profile_hash(struct aa_profile *profile, u32 version, void *start,
 			 size_t len)
 {
  	SHASH_DESC_ON_STACK(desc, apparmor_tfm);
 	int error = -ENOMEM;
 	u32 le32_version = cpu_to_le32(version);
+
+	if (!aa_g_hash_policy)
+		return 0;
 
 	if (!apparmor_tfm)
 		return 0;

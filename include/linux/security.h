@@ -1595,6 +1595,16 @@ static inline void security_audit_rule_free(void *lsmrule)
 
 #ifdef CONFIG_SECURITYFS
 
+extern int securityfs_pin_fs(void);
+extern int __securityfs_setup_d_inode(struct inode *dir, struct dentry *dentry,
+				      umode_t mode, void *data,
+				      const struct file_operations *fops,
+				      const struct inode_operations *iops);
+extern struct dentry *securityfs_create_dentry(const char *name, umode_t mode,
+				        struct dentry *parent, void *data,
+					const struct file_operations *fops,
+					const struct inode_operations *iops);
+
 extern struct dentry *securityfs_create_file(const char *name, umode_t mode,
 					     struct dentry *parent, void *data,
 					     const struct file_operations *fops);
