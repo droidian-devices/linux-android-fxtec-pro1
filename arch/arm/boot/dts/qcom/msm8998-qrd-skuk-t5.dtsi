@@ -504,7 +504,7 @@
 			label = "hall_b";
 			gpios = <&tlmm 124 0x1>;
 			linux,input-type = <5>;
-			linux,code = <0>;
+			linux,code = <10>;
 			gpio-key,wakeup;
 			debounce-interval = <15>;
 		};
