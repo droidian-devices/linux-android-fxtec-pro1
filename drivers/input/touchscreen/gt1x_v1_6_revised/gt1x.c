@@ -452,8 +452,8 @@ int gt1x_vcc_i2c_switch(int on)
 	int ret;
 	struct i2c_client *client = gt1x_i2c_client;
 
-    if (!client || !vcc_i2c)
-        return -1;
+	if (!client || !vcc_i2c)
+		return -1;
 	
 	if (on) {
 		GTP_DEBUG("GTP power on.");
