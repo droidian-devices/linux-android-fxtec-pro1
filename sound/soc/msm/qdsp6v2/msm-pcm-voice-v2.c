@@ -499,12 +499,6 @@ static int msm_voice_sidetone_put(struct snd_kcontrol *kcontrol,
 	bool sidetone_enable = ucontrol->value.integer.value[0];
 	uint32_t session_id = ALL_SESSION_VSID;
 
-	if (sidetone_enable < 0) {
-		pr_err("%s: Invalid arguments sidetone enable %d\n",
-			 __func__, sidetone_enable);
-		ret = -EINVAL;
-		return ret;
-	}
 	ret = voc_set_afe_sidetone(session_id, sidetone_enable);
 	pr_debug("%s: AFE Sidetone enable=%d session_id=0x%x ret=%d\n",
 		 __func__, sidetone_enable, session_id, ret);
