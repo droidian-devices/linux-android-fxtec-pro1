@@ -40,18 +40,18 @@ dtb-stamp: kernel-stamp
 	$(BUILD_COMMAND) dtbs
 
 out/KERNEL_OBJ/target-dtb: kernel-stamp dtb-stamp
-	ifeq ($(KERNEL_IMAGE_WITH_DTB), 1)
-		ifeq ($(KERNEL_IMAGE_WITH_DTB_OVERLAY), 1)
-			ufdt_apply_overlay $(KERNEL_IMAGE_DTB) $(KERNEL_IMAGE_DTB_OVERLAY) $(KERNEL_OUT)/dtb-merged
-		else
+ifeq ($(KERNEL_IMAGE_WITH_DTB),1)
+ifeq ($(KERNEL_IMAGE_WITH_DTB_OVERLAY),1)
+			ufdt_apply_overlay $(KERNEL_OUT)/$(KERNEL_IMAGE_DTB) $(KERNEL_OUT)/$(KERNEL_IMAGE_DTB_OVERLAY) $(KERNEL_OUT)/dtb-merged
+else
 			cp $(KERNEL_IMAGE_DTB) $(KERNEL_OUT)/dtb-merged
-		endif
+endif
 		cat $(KERNEL_OUT)/arch/$(KERNEL_ARCH)/boot/$(KERNEL_BUILD_TARGET) \
 			$(KERNEL_OUT)/dtb-merged \
 			> $@
-	else
+else
 		cp $(KERNEL_OUT)/arch/$(KERNEL_ARCH)/boot/$(KERNEL_BUILD_TARGET) $@
-	endif
+endif
 
 out/KERNEL_OBJ/boot.img: out/KERNEL_OBJ/target-dtb
 	mkbootimg \
@@ -63,7 +63,7 @@ out/KERNEL_OBJ/boot.img: out/KERNEL_OBJ/target-dtb
 		--second_offset $(KERNEL_BOOTIMAGE_SECONDIMAGE_OFFSET) \
 		--tags_offset $(KERNEL_BOOTIMAGE_TAGS_OFFSET) \
 		--pagesize $(KERNEL_BOOTIMAGE_PAGE_SIZE) \
-		--cmdline "$(KERNEL_BOOTIMAGE_CMDLINE) \
+		--cmdline "$(KERNEL_BOOTIMAGE_CMDLINE)" \
 		-o $@
 
 override_dh_auto_configure: debian/control out/KERNEL_OBJ/.config

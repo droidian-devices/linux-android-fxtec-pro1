@@ -19,6 +19,7 @@ Build-Depends: build-essential,
                libssl-dev,
                linux-initramfs-halium-generic,
                android-sdk-ufdt-tests,
+               mkbootimg,
 Standards-Version: 4.5.0.3
 Vcs-Browser: https://github.com/hybris-mobian/linux-android-fxtec-pro1
 Vcs-Git: https://github.com/hybris-mobian/linux-android-fxtec-pro1.git
