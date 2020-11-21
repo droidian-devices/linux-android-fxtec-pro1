@@ -3867,8 +3867,7 @@ static void wma_add_bss_ibss_mode(tp_wma_handle wma, tpAddBssParams add_bss)
 
 	vdev = wma_find_vdev_by_addr(wma, add_bss->selfMacAddr, &vdev_id);
 	if (!vdev) {
-		WMA_LOGE("%s: vdev not found for vdev id %d.",
-				__func__, vdev_id);
+		WMA_LOGE("%s: vdev not found.", __func__);
 		goto send_fail_resp;
 	}
 	WMA_LOGD("%s: add_bss->sessionId = %d", __func__, vdev_id);
