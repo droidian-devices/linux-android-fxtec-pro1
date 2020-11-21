@@ -13,7 +13,8 @@ endif
 export DEB_TARGET_MULTIARCH = $(shell dpkg-architecture -qDEB_TARGET_MULTIARCH)
 
 KERNEL_RELEASE = $(KERNEL_BASE_VERSION)-$(DEVICE_VENDOR)-$(DEVICE_MODEL)
-KERNEL_OUT = $(CURDIR)/out/KERNEL_OBJ
+OUT = $(CURDIR)/out
+KERNEL_OUT = $(OUT)/KERNEL_OBJ
 BUILD_COMMAND = LDFLAGS="" CFLAGS="" $(MAKE) KERNELRELEASE=$(KERNEL_RELEASE) ARCH=$(KERNEL_ARCH) -j$(NUMJOBS) O=$(KERNEL_OUT)
 
 %:
@@ -29,17 +30,19 @@ debian/control: debian/control.in
 out/KERNEL_OBJ/.config: arch/$(KERNEL_ARCH)/configs/$(KERNEL_DEFCONFIG)
 	$(BUILD_COMMAND) defconfig KBUILD_DEFCONFIG=$(KERNEL_DEFCONFIG)
 
-kernel-stamp: out/KERNEL_OBJ/.config
+out/kernel-stamp: out/KERNEL_OBJ/.config
 	$(BUILD_COMMAND) $(KERNEL_BUILD_TARGET)
-	touch kernel-stamp
+	touch $(OUT)/kernel-stamp
 
-modules-stamp: kernel-stamp
+out/modules-stamp: out/kernel-stamp
 	$(BUILD_COMMAND) modules
+	touch $(OUT)/modules-stamp
 
-dtb-stamp: kernel-stamp
+out/dtb-stamp: out/kernel-stamp
 	$(BUILD_COMMAND) dtbs
+	touch $(OUT)/dtb-stamp
 
-out/KERNEL_OBJ/target-dtb: kernel-stamp dtb-stamp
+out/KERNEL_OBJ/target-dtb: out/kernel-stamp out/dtb-stamp
 ifeq ($(KERNEL_IMAGE_WITH_DTB),1)
 ifeq ($(KERNEL_IMAGE_WITH_DTB_OVERLAY),1)
 			ufdt_apply_overlay $(KERNEL_OUT)/$(KERNEL_IMAGE_DTB) $(KERNEL_OUT)/$(KERNEL_IMAGE_DTB_OVERLAY) $(KERNEL_OUT)/dtb-merged
@@ -68,23 +71,23 @@ out/KERNEL_OBJ/boot.img: out/KERNEL_OBJ/target-dtb
 
 override_dh_auto_configure: debian/control out/KERNEL_OBJ/.config
 
-override_dh_auto_build: out/KERNEL_OBJ/target-dtb out/KERNEL_OBJ/boot.img modules-stamp dtb-stamp
+override_dh_auto_build: out/KERNEL_OBJ/target-dtb out/KERNEL_OBJ/boot.img out/modules-stamp out/dtb-stamp
 
 override_dh_auto_install:
 	mkdir -p $(CURDIR)/debian/linux-image-$(KERNEL_RELEASE)/boot
-	$(BUILD_COMMAND) modules_install INSTALL_MOD_PATH=$(CURDIR)/debian/linux-image-$(KERNEL_RELEASE)
-	cp -v System.map $(CURDIR)/debian/linux-image-$(KERNEL_RELEASE)/boot/System.map-$(KERNEL_RELEASE)
+	$(BUILD_COMMAND) modules_install INSTALL_MOD_STRIP=1 INSTALL_MOD_PATH=$(CURDIR)/debian/linux-image-$(KERNEL_RELEASE)
+	cp -v $(KERNEL_OUT)/System.map $(CURDIR)/debian/linux-image-$(KERNEL_RELEASE)/boot/System.map-$(KERNEL_RELEASE)
 	cp -v $(KERNEL_OUT)/target-dtb $(CURDIR)/debian/linux-image-$(KERNEL_RELEASE)/boot/$(KERNEL_BUILD_TARGET)-$(KERNEL_RELEASE)
 	cp -v $(KERNEL_OUT)/.config $(CURDIR)/debian/linux-image-$(KERNEL_RELEASE)/boot/config-$(KERNEL_RELEASE)
+	rm -f $(CURDIR)/debian/linux-image-$(KERNEL_RELEASE)/lib/modules/$(KERNEL_RELEASE)/build
+	rm -f $(CURDIR)/debian/linux-image-$(KERNEL_RELEASE)/lib/modules/$(KERNEL_RELEASE)/source
 
 	mkdir -p $(CURDIR)/debian/linux-bootimage-$(KERNEL_RELEASE)/boot
-	cp -v $(KERNEL_OUT)/boot.img mkdir -p $(CURDIR)/debian/linux-bootimage-$(KERNEL_RELEASE)/boot/boot.img-$(KERNEL_RELEASE)
+	cp -v $(KERNEL_OUT)/boot.img $(CURDIR)/debian/linux-bootimage-$(KERNEL_RELEASE)/boot/boot.img-$(KERNEL_RELEASE)
 
 	mkdir -p $(CURDIR)/debian/linux-headers-$(KERNEL_RELEASE)/lib/modules/$(KERNEL_RELEASE)
-	$(CURDIR)/debian/extract_headers.sh $(KERNEL_RELEASE) $(CURDIR) $(KERNEL_OUT) $(CURDIR)/debian/linux-headers-$(KERNEL_RELEASE)
+	$(CURDIR)/debian/extract_headers.sh $(KERNEL_RELEASE) $(CURDIR) $(KERNEL_OUT) $(CURDIR)/debian/linux-headers-$(KERNEL_RELEASE) $(KERNEL_ARCH)
 
 override_dh_auto_clean:
-	rm -rf $(KERNEL_OUT)
-	rm -f kernel-stamp
-	rm -f modules-stamp
-	rm -f dtb-stamp
+	rm -rf $(OUT)
+	rm -rf include/config/

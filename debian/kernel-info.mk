@@ -3,15 +3,15 @@
 DEVICE_VENDOR = fxtec
 DEVICE_MODEL = pro1
 DEVICE_FULL_NAME = F(x)tec Pro1
-KERNEL_BASE_VERSION = 4.4
+KERNEL_BASE_VERSION = 4.4-0
 KERNEL_ARCH = arm64
-KERNEL_BUILD_TARGET = Image
+KERNEL_BUILD_TARGET = Image.gz
 KERNEL_DEFCONFIG = lineage-pro1_defconfig
 KERNEL_IMAGE_WITH_DTB = 1
 KERNEL_IMAGE_DTB = arch/arm64/boot/dts/qcom/msm8998-v2-qrd-skuk-t5.dtb
 KERNEL_IMAGE_WITH_DTB_OVERLAY = 1
 KERNEL_IMAGE_DTB_OVERLAY = arch/arm64/boot/dts/qcom/msm8998-v2-qrd-skuk-t5-overlay.dtbo
-KERNEL_BOOTIMAGE_CMDLINE = console=ttyMSM0,115200,n8 androidboot.console=ttyMSM0 earlycon=msm_serial_dm,0xc1b0000 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1 service_locator.enable=1 swiotlb=2048 androidboot.configfs=true androidboot.usbcontroller=a800000.dwc3 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 console=tty0 systempart=/dev/disk/by-partlabel/system
+KERNEL_BOOTIMAGE_CMDLINE = console=ttyMSM0,115200,n8 androidboot.console=ttyMSM0 earlycon=msm_serial_dm,0xc1b0000 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1 service_locator.enable=1 swiotlb=2048 androidboot.configfs=true androidboot.usbcontroller=a800000.dwc3 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 console=tty0
 KERNEL_BOOTIMAGE_PAGE_SIZE = 4096
 KERNEL_BOOTIMAGE_BASE_OFFSET = 0x00000000
 KERNEL_BOOTIMAGE_KERNEL_OFFSET = 0x00008000

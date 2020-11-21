@@ -37,7 +37,7 @@ Description: Linux kernel for @DEVICE_FULL_NAME@
 Package: linux-bootimage-@KERNEL_BASE_VERSION@-@DEVICE_VENDOR@-@DEVICE_MODEL@
 Architecture: arm64
 Depends: ${misc:Depends},
-         linux-image-@KERNEL_BASE_VERSION@-@DEVICE_VENDOR@-@DEVICE_MODEL@ (= ${binary:Version))
+         linux-image-@KERNEL_BASE_VERSION@-@DEVICE_VENDOR@-@DEVICE_MODEL@ (= ${binary:Version})
 Description: Linux kernel for @DEVICE_FULL_NAME@ - Android Boot Image
  This package contains the Linux kernel for the @DEVICE_FULL_NAME@ device.
  .
@@ -46,8 +46,8 @@ Description: Linux kernel for @DEVICE_FULL_NAME@ - Android Boot Image
 
 Package: linux-headers-@KERNEL_BASE_VERSION@-@DEVICE_VENDOR@-@DEVICE_MODEL@
 Architecture: arm64
-Depends: ${misc:Depends}
-Provides: linux-headers-@DEVICE_VENDOR@-@DEVICE_MODEL@
+Depends: ${misc:Depends},
+         linux-image-@KERNEL_BASE_VERSION@-@DEVICE_VENDOR@-@DEVICE_MODEL@ (= ${binary:Version})
 Description: Linux kernel for @DEVICE_FULL_NAME@ - Headers
  This package contains the Linux kernel headers for the @DEVICE_FULL_NAME@ device.
 
