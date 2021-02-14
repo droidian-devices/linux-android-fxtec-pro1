@@ -58,6 +58,7 @@
 
 		};
 		keyboard-backlight {
+			label = ":kbd_backlight";
 			gpios = <&tlmm 16 0x00>;
 			default-state = "off";
 			retain-state-suspended;
