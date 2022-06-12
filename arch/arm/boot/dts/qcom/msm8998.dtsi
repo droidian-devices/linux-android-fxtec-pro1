@@ -2545,7 +2545,6 @@
 			 <&clock_gcc clk_gcc_ce1_axi_m_clk>;
 		qcom,ce-opp-freq = <171430000>;
 		qcom,use-sw-aes-cbc-ecb-ctr-algo;
-		qcom,use-sw-aes-xts-algo;
 		qcom,use-sw-aes-ccm-algo;
 		qcom,use-sw-ahash-algo;
 		qcom,use-sw-aead-algo;
