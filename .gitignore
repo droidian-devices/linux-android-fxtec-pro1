@@ -115,3 +115,6 @@ android/configs/android-*.cfg
 # hybris-mobian changes
 !/debian
 !.travis.yml
+
+# Added by Droidian
+!.circleci/
