@@ -6,10 +6,12 @@ Uploaders: Eugenio Paolantonio (g7) <eugenio@droidian.org>,
            r3vn <giuseppe@droidian.org>,
            Erfan Abdi <erfan@droidian.org>,
            Erik Inkinen <erik@droidian.org>,
+XS-Droidian-Host-Arch: arm64
+XS-Droidian-Build-On: amd64
 Build-Depends: build-essential,
                dpkg-dev,
                findutils,
-               python2,
+               android-platform-prebuilts-python-linux-x86-2.7.5,
                debhelper (>= 13),
                bc,
                rsync,
@@ -21,7 +23,7 @@ Build-Depends: build-essential,
                linux-initramfs-halium-generic,
                linux-packaging-snippets,
                android-sdk-ufdt-tests,
-               mkbootimg,
+               mkbootimg (>= 10.0.0),
                mkdtboimg,
                avbtool,
                linux-initramfs-halium-generic:arm64, binutils-aarch64-linux-gnu, clang-android-6.0-4691093, gcc-4.9-aarch64-linux-android, g++-4.9-aarch64-linux-android, libgcc-4.9-dev-aarch64-linux-android-cross
@@ -41,7 +43,7 @@ Description: Linux kernel for F(x)tec Pro1
 
 Package: linux-bootimage-4.4-0-fxtec-pro1
 Architecture: arm64
-Pre-Depends: flash-bootimage
+Pre-Depends: flash-bootimage (>= 4)
 Depends: ${misc:Depends},
          linux-image-4.4-0-fxtec-pro1 (= ${binary:Version})
 Description: Linux kernel for F(x)tec Pro1 - Android Boot Image
