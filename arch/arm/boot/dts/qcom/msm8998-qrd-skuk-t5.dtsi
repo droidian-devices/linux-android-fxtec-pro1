@@ -442,7 +442,7 @@
 			label = "home";
 			gpios = <&tlmm 21 0x1>;
 			linux,input-type = <1>;
-			linux,code = <125>;
+			linux,code = <464>;
 			debounce-interval = <15>;
 		};
 
@@ -474,7 +474,7 @@
 			label = "fn_l";
 			gpios = <&tlmm 33 0x1>;
 			linux,input-type = <1>;
-			linux,code = <464>;
+			linux,code = <125>;
 			debounce-interval = <15>;
 		};
 
@@ -482,7 +482,7 @@
 			label = "fn_r";
 			gpios = <&tlmm 32 0x1>;
 			linux,input-type = <1>;
-			linux,code = <464>;
+			linux,code = <125>;
 			debounce-interval = <15>;
 		};
 	};
